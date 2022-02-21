@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import home.vs.testtask.model.Role;
 
@@ -24,14 +25,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .csrf().disable() // отключаем защиту csrf угрозы
             .authorizeRequests() // АВТОРИЗАЦИЯ ЗАПРОСОВ СЛЕДУЮЩИМ ОБРАЗОМ
-            .antMatchers("/").permitAll() // имеет доступ кто угодно
-            .antMatchers(HttpMethod.GET, "/api/**").hasAnyRole(Role.ADMIN.name(), Role.USER.name()) // доступ на чтение имеют кто угодно
-            .antMatchers(HttpMethod.POST, "/api/**").hasRole(Role.ADMIN.name()) // доступ на создание имеет админ
-            .antMatchers(HttpMethod.PUT, "/api/**").hasRole(Role.ADMIN.name()) // доступ на изменение имеет админ
-            .antMatchers(HttpMethod.DELETE, "/api/**").hasRole(Role.ADMIN.name()) // доступ на удаление имеет админ
-            .anyRequest() // КАЖДЫЙ ЗАПРОС
-            .authenticated() // долже быть аутентифицирован
-            .and().httpBasic(); // и используем для этого base64
+                .antMatchers("/").permitAll() // имеет доступ кто угодно
+                .antMatchers(HttpMethod.GET, "/api/**").hasAnyRole(Role.ADMIN.name(), Role.USER.name()) // доступ на чтение имеют кто угодно
+                .antMatchers(HttpMethod.POST, "/api/**").hasRole(Role.ADMIN.name()) // доступ на создание имеет админ
+                .antMatchers(HttpMethod.PUT, "/api/**").hasRole(Role.ADMIN.name()) // доступ на изменение имеет админ
+                .antMatchers(HttpMethod.DELETE, "/api/**").hasRole(Role.ADMIN.name()) // доступ на удаление имеет админ
+                .anyRequest().authenticated() // долже быть аутентифицирован
+            .and().formLogin().loginPage("/auth/login").permitAll().defaultSuccessUrl("/auth/success") // устанавливаем логин страницу и в случае успеха перенавляем
+            .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout", "POST")) // в случае выхода из авторизации,
+                .invalidateHttpSession(true).clearAuthentication(true).deleteCookies("JESSIONID").logoutSuccessUrl("/auth/login"); // и очищаем данные авторизации и перенаправляем на страницу авторизации
     }
 
     @Bean
