@@ -19,7 +19,7 @@ import home.vs.testtask.service.UserService;
 public class UserRestController implements ApiVersion1 {
     private UserService service;
     
-    private final static String PATH = "/" + VERSION + "/users";
+    private final static String PATH = "/api/" + VERSION + "/users";
 
     @Autowired
     public UserRestController(UserService service) {
