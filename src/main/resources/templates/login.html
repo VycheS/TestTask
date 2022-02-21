@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Вход</title>
+</head>
+<body>
+	<form name="login-form" action="/auth/login" method="post">
+		<div>
+			<h1>Авторизация</h1>
+			<span>Введите ваши регистрационные данные для входа в ваш личный кабинет. </span>
+		</div>
+		<div>
+			<input name="username" type="text" class="input username" value="Логин" onfocus="this.value=''" />
+			<input name="password" type="password" class="input password" value="Пароль" onfocus="this.value=''" />
+		</div>
+		<div>
+			<input type="submit" name="submit" value="ВОЙТИ" class="button" />
+			<form action="/auth/register" method="get"><input type="submit" name="submit" value="Регистрация"/></form>
+		</div>
+	</form>
+</body>
+</html>
