@@ -38,11 +38,11 @@ public class UserRestController implements ApiVersion1 {
 
     @PostMapping(path = PATH)
     public @ResponseBody User create(@RequestBody User user) {
-        return this.create(user);
+        return this.service.create(user);
     }
 
     @DeleteMapping(path = PATH + "/{id}")
     public @ResponseBody User deleteById(@PathVariable Long id) {
-        return this.service.deleteById(id);
+        return this.service.deleteById(id); // TODO реализовать адекватный http ответ в случае если удаляемого пользователя нет
     }
 }
