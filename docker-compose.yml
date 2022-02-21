@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+  test-app:
+    container_name: app-con
+    build:
+      context: ./dockerfiles/development/java-app
+    expose: 
+      - 8080
+      - 80
+    ports:
+      - 8080:8080
+      - 80:80
+    networks:
+      - test-network
+    volumes:
+      - ./:/usr/src/app:rw # project
+      - /home/vs/.vscode/extensions:/root/.vscode-server/extensions # for vscode
+    # restart: unless-stopped
+          
+  test-db:
+    container_name: db-con
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432" #debug
+    networks:
+      - test-network
+    # restart: unless-stopped
+
+networks:
+  test-network:
+    driver: bridge
+
