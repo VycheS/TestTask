@@ -1,10 +1,21 @@
 package home.vs.testtask.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "login")
     private String login;
+    @Column(name = "password")
     private String password;
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "role")
     private Role role;
+    @Column(name = "description")
     private String description;
 
     public User() {}
