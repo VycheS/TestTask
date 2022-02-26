@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = this.repository.findById(id);
         if (!user.isEmpty()) {
             this.repository.deleteById(id);
+            return user.get();
         }
         return null;
     }
