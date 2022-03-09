@@ -5,6 +5,9 @@ services:
     container_name: app-con
     build:
       context: ./dockerfiles/development/java-app
+      args:
+        UID: 1000
+        GID: 1000 
     expose: 
       - 8080
       - 80
@@ -16,6 +19,8 @@ services:
     volumes:
       - ./:/usr/src/app:rw # project
       - /home/vs/.vscode/extensions:/root/.vscode-server/extensions # for vscode
+      - /etc/timezone:/etc/timezone:ro # timezone
+      - /etc/localtime:/etc/localtime:ro # localtime
     # restart: unless-stopped
           
   test-db:
@@ -25,7 +30,9 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
     volumes:
-      - ./sql:/docker-entrypoint-initdb.d
+      - ./sql:/docker-entrypoint-initdb.d # start sql scripts
+      - /etc/timezone:/etc/timezone:ro # timezone
+      - /etc/localtime:/etc/localtime:ro # localtime
     ports:
       - "5432:5432" #debug
     networks:

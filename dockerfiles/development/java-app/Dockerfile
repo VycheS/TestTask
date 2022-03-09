@@ -1,7 +1,24 @@
 FROM openjdk:11-jdk-slim
 
-RUN apt update &&\
-    apt install -y git
+ARG UID=1000
+ARG GID=1000
+ENV UID=${UID}
+ENV GID=${GID}
+
+RUN apt update \
+&& apt install -y git curl
+
+RUN groupadd --gid $UID node \
+&& useradd --uid $GID --gid node --shell /bin/bash --create-home node \
+&& usermod -u $UID node \
+&& groupmod -g $GID node
+
+USER ${UID}
+
+RUN git clone git://github.com/ohmybash/oh-my-bash.git ~/.oh-my-bash \
+&& cp ~/.bashrc ~/.bashrc.orig \
+&& cp ~/.oh-my-bash/templates/bashrc.osh-template ~/.bashrc
 
 WORKDIR /usr/src/app
+
 ENTRYPOINT ["tail","-f","/dev/null"]
