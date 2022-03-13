@@ -17,8 +17,9 @@ USER ${UID}
 
 RUN git clone git://github.com/ohmybash/oh-my-bash.git ~/.oh-my-bash \
 && cp ~/.bashrc ~/.bashrc.orig \
-&& cp ~/.oh-my-bash/templates/bashrc.osh-template ~/.bashrc
+&& cp ~/.oh-my-bash/templates/bashrc.osh-template ~/.bashrc \
+&& sed -i 's/OSH_THEME="font"/OSH_THEME="tonotdo"/' ~/.bashrc
 
-WORKDIR /usr/src/app
+WORKDIR /home/node/app
 
 ENTRYPOINT ["tail","-f","/dev/null"]

@@ -17,7 +17,7 @@ services:
     networks:
       - test-network
     volumes:
-      - ./:/usr/src/app:rw # project
+      - ./:/home/node/app:rw # project
       - /home/vs/.vscode/extensions:/root/.vscode-server/extensions # for vscode
       - /etc/timezone:/etc/timezone:ro # timezone
       - /etc/localtime:/etc/localtime:ro # localtime
