@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import home.vs.testtask.model.Permission;
 import home.vs.testtask.model.Role;
 
 @Configuration
@@ -25,13 +26,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .csrf().disable() // отключаем защиту csrf угрозы
             .authorizeRequests() // АВТОРИЗАЦИЯ ЗАПРОСОВ СЛЕДУЮЩИМ ОБРАЗОМ
-                .antMatchers("/", "/resources/**").permitAll() // имеет доступ кто угодно
-                .antMatchers(HttpMethod.GET, "/api/**").hasAnyRole(Role.ADMIN.name(), Role.USER.name()) // доступ на чтение имеют кто угодно
-                .antMatchers(HttpMethod.POST, "/api/**").hasRole(Role.ADMIN.name()) // доступ на создание имеет админ
-                .antMatchers(HttpMethod.PUT, "/api/**").hasRole(Role.ADMIN.name()) // доступ на изменение имеет админ
-                .antMatchers(HttpMethod.DELETE, "/api/**").hasRole(Role.ADMIN.name()) // доступ на удаление имеет админ
-                .anyRequest().authenticated() // долже быть аутентифицирован
-            // .and().httpBasic()
+                .antMatchers("/").permitAll() // имеет доступ кто угодно
+                .antMatchers(HttpMethod.GET, "/api/**").hasAuthority(Permission.USERS_READ.getPermission()) // доступ на чтение имеют кто угодно
+                .antMatchers(HttpMethod.POST, "/api/**").hasAuthority(Permission.USERS_WRITE.getPermission()) // доступ на создание имеет админ
+                .antMatchers(HttpMethod.PUT, "/api/**").hasAuthority(Permission.USERS_WRITE.getPermission()) // доступ на изменение имеет админ
+                .antMatchers(HttpMethod.DELETE, "/api/**").hasAuthority(Permission.USERS_WRITE.getPermission()) // доступ на удаление имеет админ
+                .anyRequest().authenticated() // должен быть аутентифицирован
+            // .and().httpBasic();
             .and().formLogin().loginPage("/auth/login").permitAll().defaultSuccessUrl("/auth/success") // устанавливаем логин страницу и в случае успеха перенавляем
             .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout", "POST")) // в случае выхода из авторизации,
                 .invalidateHttpSession(true).clearAuthentication(true).deleteCookies("JESSIONID").logoutSuccessUrl("/auth/login"); // и очищаем данные авторизации и перенаправляем на страницу авторизации
@@ -44,12 +45,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             User.builder() // для авторизации админа
                 .username("admin")
                 .password(passwordEncoder().encode("admin"))
-                .roles(Role.ADMIN.name())
+                .authorities(Role.ADMIN.getAuthorities())
                 .build(),
             User.builder() // для авторизации обычного пользователя
                 .username("user")
                 .password(passwordEncoder().encode("user"))
-                .roles(Role.USER.name())
+                .authorities(Role.USER.getAuthorities())
                 .build()
         );
     }
