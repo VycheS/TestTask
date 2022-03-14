@@ -64,7 +64,7 @@ public class UserSecurity implements UserDetails {
             true, // accountNonExpired
             true, // credentialsNonExpired
             true, // accountNonLocked
-            null // authorities
+            user.getRole().getAuthorities() // authorities
         );
     }
     
