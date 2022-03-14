@@ -4,7 +4,7 @@
 	<title>Регистрация</title>
 </head>
 <body>
-	<form name="login-form" action="/auth/register" method="post">
+	<form name="login-form" action="/register" method="post">
 		<div>
 			<h1>Регистрация</h1>
 			<span>Введите ваши данные для регистрации. </span>
@@ -17,5 +17,7 @@
 			<input type="submit" name="submit" value="Зарегистрировать" class="button" />
 		</div>
 	</form>
+	<hr>
+	<form action="/auth/login" method="get"><input type="submit" name="submit" value="Авторизация"/></form>
 </body>
 </html>

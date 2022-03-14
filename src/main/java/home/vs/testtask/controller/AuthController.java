@@ -17,10 +17,5 @@ public class AuthController {
     public String getSuccessPage() {
         return "success";
     }
-
-    @GetMapping("/register")
-    public String getRegisterPage() {
-        return "register";
-    }
     
 }

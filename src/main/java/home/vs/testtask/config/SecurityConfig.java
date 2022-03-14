@@ -35,6 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .csrf().disable() // отключаем защиту csrf угрозы
             .authorizeRequests() // АВТОРИЗАЦИЯ ЗАПРОСОВ СЛЕДУЮЩИМ ОБРАЗОМ
                 .antMatchers("/").permitAll() // имеет доступ кто угодно
+                .antMatchers("/register").not().fullyAuthenticated() // доступ для незарегистрированных пользователей
                 .antMatchers(HttpMethod.GET, "/api/**").hasAuthority(Permission.USERS_READ.getPermission()) // доступ на чтение имеют кто угодно
                 .antMatchers(HttpMethod.POST, "/api/**").hasAuthority(Permission.USERS_WRITE.getPermission()) // доступ на создание имеет админ
                 .antMatchers(HttpMethod.PUT, "/api/**").hasAuthority(Permission.USERS_WRITE.getPermission()) // доступ на изменение имеет админ
