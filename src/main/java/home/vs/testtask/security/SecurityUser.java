@@ -9,13 +9,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import home.vs.testtask.model.User;
 
-public class UserSecurity implements UserDetails {
+public class SecurityUser implements UserDetails {
 
     private final String username;
     private final String password;
     private final List<SimpleGrantedAuthority> authorities;
 
-    public UserSecurity(String username, String password, List<SimpleGrantedAuthority> authorities) {
+    public SecurityUser(String username, String password, List<SimpleGrantedAuthority> authorities) {
         this.username = username;
         this.password = password;
         this.authorities = authorities;
