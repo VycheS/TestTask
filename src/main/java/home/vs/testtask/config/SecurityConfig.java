@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.DELETE, "/api/**").hasAuthority(Permission.USERS_WRITE.getPermission()) // доступ на удаление имеет админ
                 .anyRequest().authenticated() // должен быть аутентифицирован
             // .and().httpBasic();
-            .and().formLogin().loginPage("/auth/login").permitAll().defaultSuccessUrl("/auth/success") // устанавливаем логин страницу и в случае успеха перенавляем
+            .and().formLogin().loginPage("/auth/login").permitAll().defaultSuccessUrl("/auth/successfulAuthorization") // устанавливаем логин страницу и в случае успеха перенавляем
             .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout", "POST")) // в случае выхода из авторизации,
                 .invalidateHttpSession(true).clearAuthentication(true).deleteCookies("JESSIONID").logoutSuccessUrl("/auth/login"); // и очищаем данные авторизации и перенаправляем на страницу авторизации
     }

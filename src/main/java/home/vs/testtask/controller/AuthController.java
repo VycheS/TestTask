@@ -13,9 +13,9 @@ public class AuthController {
         return "login";
     }
 
-    @GetMapping("/success")
+    @GetMapping("/successfulAuthorization")
     public String getSuccessPage() {
-        return "success";
+        return "successfulAuthorization";
     }
     
 }
