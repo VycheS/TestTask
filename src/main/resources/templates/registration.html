@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<title>Регистрация</title>
 </head>
 <body>
-	<form name="login-form" action="/registration" method="post">
+	<form name="login-form" action="/registration" method="POST" enctype="utf8">
 		<div>
 			<h1>Регистрация</h1>
 			<span>Введите ваши данные для регистрации. </span>
@@ -12,13 +12,10 @@
 		<div>
 			<input name="username" type="text" class="input username" value="Логин" onfocus="this.value=''" />
 			<input name="password" type="password" class="input password" value="Пароль" onfocus="this.value=''" />
-			<input name="description" type="text" class="input username" value="Описание"/>
 		</div>
-		<div>
-			<input type="submit" name="submit" value="ЗАРЕГИСТРИРОВАТЬ" class="button" />
-		</div>
+		<button type="submit">ЗАРЕГИСТРИРОВАТЬ</button>
 	</form>
 	<hr>
-	<form action="/auth/login" method="get"><input type="submit" name="submit" value="Авторизация"/></form>
+	<form action="/auth/login" method="get"><button type="submit">Авторизация</button></form>
 </body>
 </html>
