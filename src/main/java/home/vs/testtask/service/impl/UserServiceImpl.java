@@ -12,7 +12,7 @@ import home.vs.testtask.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
-    private UserRepository repository;
+    private final UserRepository repository;
     
     @Autowired
     public UserServiceImpl(UserRepository repository) {
