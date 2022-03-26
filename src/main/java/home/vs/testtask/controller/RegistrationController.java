@@ -14,14 +14,18 @@ import home.vs.testtask.model.Role;
 import home.vs.testtask.model.User;
 import home.vs.testtask.service.UserService;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 @Controller
 @RequestMapping("/registration")
 public class RegistrationController {
-    @Autowired
     private final UserService userService;
-
-    public RegistrationController(UserService userService) {
+    private final PasswordEncoder passwordEncoder;
+    
+    @Autowired
+    public RegistrationController(UserService userService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -33,7 +37,7 @@ public class RegistrationController {
     public String addUserAccount(
         @RequestParam Map<String, String> data) {
             if (userService.getByLogin(data.get("username")) == null) {
-                User user = new User(null, data.get("username"), data.get("password"), Role.USER, "new user");
+                User user = new User(null, data.get("username"), passwordEncoder.encode(data.get("password")), Role.USER, "new user");
                 userService.create(user);
                 return "successfulRegistration";
             }
