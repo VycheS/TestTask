@@ -34,14 +34,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .csrf().disable() // отключаем защиту csrf угрозы
             .authorizeRequests() // АВТОРИЗАЦИЯ ЗАПРОСОВ СЛЕДУЮЩИМ ОБРАЗОМ
-                .antMatchers("/").permitAll() // имеет доступ кто угодно
-                .antMatchers("/registration").not().fullyAuthenticated() // доступ для незарегистрированных пользователей
+                .antMatchers("/registration", "/auth/login").permitAll() // имеет доступ кто угодно
+                .antMatchers("/").fullyAuthenticated() // доступ для авторизированный пользователей
                 .antMatchers(HttpMethod.GET, "/api/**").hasAuthority(Permission.USERS_READ.getPermission()) // доступ на чтение имеют кто угодно
                 .antMatchers(HttpMethod.POST, "/api/**").hasAuthority(Permission.USERS_WRITE.getPermission()) // доступ на создание имеет админ
                 .antMatchers(HttpMethod.PUT, "/api/**").hasAuthority(Permission.USERS_WRITE.getPermission()) // доступ на изменение имеет админ
                 .antMatchers(HttpMethod.DELETE, "/api/**").hasAuthority(Permission.USERS_WRITE.getPermission()) // доступ на удаление имеет админ
                 .anyRequest().authenticated() // должен быть аутентифицирован
-            // .and().httpBasic();
             .and().formLogin().loginPage("/auth/login").permitAll().defaultSuccessUrl("/auth/successfulAuthorization") // устанавливаем логин страницу и в случае успеха перенавляем
             .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout", "POST")) // в случае выхода из авторизации,
                 .invalidateHttpSession(true).clearAuthentication(true).deleteCookies("JESSIONID").logoutSuccessUrl("/auth/login"); // и очищаем данные авторизации и перенаправляем на страницу авторизации
